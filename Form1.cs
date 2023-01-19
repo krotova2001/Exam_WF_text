@@ -7,14 +7,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+using System.Text.Json;
 
 namespace Exam_WF
 {
     public partial class Form1 : Form
     {
+        List<Favorite> favoriteList = new List<Favorite>(); // список избранного
         public Form1()
         {
             InitializeComponent();
+        }
+
+        //функция сохранения избранного в файл
+        private void Save_favorites()
+        {
+
         }
 
 #region переключение тем
