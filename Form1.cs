@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Text.Json;
+using System.Speech.Synthesis;
 
 namespace Exam_WF
 {
@@ -23,8 +24,26 @@ namespace Exam_WF
         //функция сохранения избранного в файл
         private void Save_favorites()
         {
-
+            using (FileStream fs = new FileStream("bookmarks.json", FileMode.Create, FileAccess.Write))
+            {
+                JsonSerializer.Serialize<List<Favorite>>(fs, favoriteList);
+            }
         }
+
+        private void Load_favorites()
+        {
+            try
+            {
+                string buffer = File.ReadAllText("bookmarks.json");
+                //favoriteList = JsonSerializer.Deserialize<List<Favorite>>(buffer);
+            }
+            catch (Exception ex)    
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
+        }
+            
 
 #region переключение тем
         //светая тема
@@ -53,6 +72,19 @@ namespace Exam_WF
             richTextBox1.BackColor = Color.Gray;
             richTextBox1.ForeColor = Color.White;
         }
-#endregion
+        #endregion
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        //кнопка "Озвучить"
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SpeechSynthesizer synth = new SpeechSynthesizer();
+            synth.SetOutputToDefaultAudioDevice();
+            synth.SpeakAsync(richTextBox1.Text);
+        }
     }
 }
